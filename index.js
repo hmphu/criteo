@@ -25,6 +25,10 @@ module.exports = function(config, pageType, pageData) {
         pageType == 'order' && trackOrder();
     });
 
+    function doLog(message) {
+        config.isDebug && console.log('Criteo debug: '+message);
+    }
+
     function getDeviceType() {
         if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
             if(/iPad/.text(navigator.userAgent) || $(window).width() > 736) {
@@ -50,6 +54,8 @@ module.exports = function(config, pageType, pageData) {
             { event: "setSiteType", type: getDeviceType() },
             { event: "viewHome" }
         );
+
+        doLog('Tracking homepage view for: '+getCurrentUser()+' with device type: '+getDeviceType()+' for account '+accountId);
     }
 
     function trackCategoryPage() {
@@ -62,6 +68,8 @@ module.exports = function(config, pageType, pageData) {
                 { event: "setSiteType", type: getDeviceType() },
                 { event: "viewList", item:pcs }
             );
+
+            doLog('Tracking category view for: '+getCurrentUser()+' with device type: '+getDeviceType()+' for account '+accountId+' with pcs: '+pcs.join(','));
         });
     }
 
@@ -81,6 +89,8 @@ module.exports = function(config, pageType, pageData) {
                 { event: "setSiteType", type: getDeviceType() },
                 { event: "viewItem", item: id }
             );
+
+            doLog('Tracking product view for: '+getCurrentUser()+' with device type: '+getDeviceType()+' for account '+accountId+' with pc: '+id);
         });
     }
 
@@ -100,6 +110,8 @@ module.exports = function(config, pageType, pageData) {
             { event: "setSiteType", type: getDeviceType() },
             { event: "trackTransaction", id: order.id+'', item: lineItems }
         );
+
+        doLog('Tracking category view for: '+getCurrentUser()+' with device type: '+getDeviceType()+' for account '+accountId+' with line items: '+JSON.stringify(lineItems));
     }
 
     function trackCart() {
@@ -125,6 +137,8 @@ module.exports = function(config, pageType, pageData) {
                 { event: "setSiteType", type: getDeviceType() },
                 { event: "viewBasket", item: lineItems}
             );
+
+            doLog('Tracking category view for: '+getCurrentUser()+' with device type: '+getDeviceType()+' for account '+accountId+' with line items: '+JSON.stringify(lineItems));
         });
     }
 
