@@ -26,7 +26,7 @@ module.exports = function(config, pageType, pageData) {
     });
 
     function doLog(message) {
-        config.isDebug && console.log('Criteo debug: '+message);
+        config.debug && console.log('Criteo debug: '+message);
     }
 
     function getDeviceType() {
