@@ -19,10 +19,16 @@ module.exports = function(config, pageType, pageData) {
         return false;
     }).then(function() {
         window.location.pathname == '/' && trackHomepageView();
-        pageType == 'store' && trackCategoryPage();
-        pageType == 'product' && trackProductPage();
-        pageType == 'cart' && trackCart();
-        pageType == 'order' && trackOrder();
+
+        //Something is wrong with pageType on store pages
+        ($('#storeCarousel').length > 0 || window.location.pathname == '/search') && trackCategoryPage();
+
+        //Something is wrong with pageType on product pages
+        $('[ng-controller=ProductCtrl]').length > 0 && trackProductPage();
+
+        window.location.pathname == '/cart' && trackCart();
+
+        /\/order\//.exec(window.location.pathname) && typeof order !== 'undefined' && trackOrder();
     });
 
     function doLog(message) {
@@ -44,7 +50,7 @@ module.exports = function(config, pageType, pageData) {
     function getCurrentUser() {
         var user = $('[ng-controller=AppCtrl]').scope().currentUser;
 
-        return ((currentUser && currentUser.email) || '');
+        return ((user && user.email) || ((order && order.email) || ''));
     }
 
     function trackHomepageView() {
@@ -116,7 +122,9 @@ module.exports = function(config, pageType, pageData) {
 
     function trackCart() {
         feu.whenReady(function() {
-            if(typeof $('[ng-controller=CheckoutCtrl]').scope() !== 'undefined') {
+            if(typeof $('[ng-controller=CheckoutCtrl]').scope() !== 'undefined' &&
+                $('[ng-controller=CheckoutCtrl]').scope().cart &&
+                $('[ng-controller=CheckoutCtrl]').scope().cart.lineItems.length > 0) {
                 return $('[ng-controller=CheckoutCtrl]').scope().cart;
             }
 
@@ -151,4 +159,4 @@ module.exports = function(config, pageType, pageData) {
 
     Symphony.activeApps = Symphony.activeApps || [];
     Symphony.activeApps.push(thisApp);
-}
+};
