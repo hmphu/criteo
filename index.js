@@ -50,7 +50,7 @@ module.exports = function(config, pageType, pageData) {
     function getCurrentUser() {
         var user = $('[ng-controller=AppCtrl]').scope().currentUser;
 
-        return ((user && user.email) || ((order && order.email) || ''));
+        return ((user && user.email) || ((window.order && window.order.email) || ''));
     }
 
     function trackHomepageView() {
@@ -102,7 +102,7 @@ module.exports = function(config, pageType, pageData) {
 
     function trackOrder() {
         var lineItems = [];
-        _.each(order.items, function(lineItem) {
+        _.each(window.order.items, function(lineItem) {
             lineItems.push({
                 id: lineItem.productClusterId,
                 price: (lineItem.productPrice).toFixed(2),
@@ -114,7 +114,7 @@ module.exports = function(config, pageType, pageData) {
             { event: "setAccount", account: accountId },
             { event: "setEmail", email: getCurrentUser() },
             { event: "setSiteType", type: getDeviceType() },
-            { event: "trackTransaction", id: order.id+'', item: lineItems }
+            { event: "trackTransaction", id: window.order.id+'', item: lineItems }
         );
 
         doLog('Tracking category view for: '+getCurrentUser()+' with device type: '+getDeviceType()+' for account '+accountId+' with line items: '+JSON.stringify(lineItems));
