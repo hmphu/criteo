@@ -6,6 +6,7 @@ module.exports = function(config, pageType, pageData) {
 
     var accountId = config.accountId;
     var pcUniqueId = 'id';
+    var pcUniqueIdOrder = 'productId';
 
     Loader("//static.criteo.net/js/ld/ld.js");
 
@@ -66,7 +67,7 @@ module.exports = function(config, pageType, pageData) {
 
     function trackCategoryPage() {
         feu.watch('store', function(productClusters) {
-            var pcs = _.map(productClusters, pcUniqueId);
+            var pcs = _.map(productClusters, 'id');
 
             window.criteo_q.push(
                 { event: "setAccount", account: accountId },
@@ -87,7 +88,7 @@ module.exports = function(config, pageType, pageData) {
 
             return false;
         }).then(function(pc) {
-            var id = pc[pcUniqueId];
+            var id = pc.id;
 
             window.criteo_q.push(
                 { event: "setAccount", account: accountId },
@@ -104,7 +105,7 @@ module.exports = function(config, pageType, pageData) {
         var lineItems = [];
         _.each(order.items, function(lineItem) {
             lineItems.push({
-                id: lineItem.productClusterId,
+                id: lineItem.productId,
                 price: (lineItem.productPrice).toFixed(2),
                 quantity: lineItem.quantity
             });
@@ -133,7 +134,7 @@ module.exports = function(config, pageType, pageData) {
             var lineItems = [];
             _.each(cart.lineItems, function(lineItem) {
                 lineItems.push({
-                    id: lineItem[pcUniqueId],
+                    id: lineItem.variant.id,
                     price: (lineItem.memberPricePerUnit/100.0).toFixed(2),
                     quantity: lineItem.quantity
                 });
