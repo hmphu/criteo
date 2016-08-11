@@ -147,7 +147,7 @@ module.exports = function(config, pageType, pageData) {
                 { event: "viewBasket", item: lineItems}
             );
 
-            doLog('Tracking category view for: '+getCurrentUser()+' with device type: '+getDeviceType()+' for account '+accountId+' with line items: '+JSON.stringify(lineItems));
+            doLog('Tracking order view for: '+getCurrentUser()+' with device type: '+getDeviceType()+' for account '+accountId+' with line items: '+JSON.stringify(lineItems));
         });
     }
 
