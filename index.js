@@ -13,7 +13,7 @@ module.exports = function(config, pageType, pageData) {
     window.criteo_q = window.criteo_q || [];
 
     feu.whenReady(function() {
-        if(typeof $('[ng-controller=AppCtrl]').scope() !== 'undefined') {
+        if(typeof $('[ng-controller=AppCtrl]').scope() !== 'undefined' && typeof $('[ng-controller=AppCtrl]').scope().currentUser !== 'undefined') {
             return true;
         }
 
