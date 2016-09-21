@@ -3,7 +3,7 @@ var feu = require('symphony-feu');
 
 module.exports = function(config, pageType, pageData) {
     var feu = require('symphony-feu');
-
+    console.log('Im here');
     var accountId = config.accountId;
     var pcUniqueId = 'id';
     var pcUniqueIdOrder = 'productId';
@@ -27,7 +27,7 @@ module.exports = function(config, pageType, pageData) {
         //Something is wrong with pageType on product pages
         $('[ng-controller=ProductCtrl]').length > 0 && trackProductPage();
 
-        window.location.pathname == '/cart' && trackCart();
+        window.location.pathname == '/cart/beta' && trackCart();
 
         /\/order\//.exec(window.location.pathname) && typeof order !== 'undefined' && trackOrder();
     });
@@ -122,22 +122,27 @@ module.exports = function(config, pageType, pageData) {
     }
 
     function trackCart() {
+        console.log('Im tracking');
         feu.whenReady(function() {
-            if(typeof $('[ng-controller=CheckoutCtrl]').scope() !== 'undefined' &&
-                $('[ng-controller=CheckoutCtrl]').scope().cart &&
-                $('[ng-controller=CheckoutCtrl]').scope().cart.lineItems.length > 0) {
-                return $('[ng-controller=CheckoutCtrl]').scope().cart;
-            }
+            var $checkoutCtrl = $('[ng-controller="CheckoutBetaCtrl"]');
 
-            return false;
+        if (!$checkoutCtrl.length ||
+            !$checkoutCtrl.scope() ||
+            !$checkoutCtrl.scope().isPageReady
+            ) {
+            return;
+        }
+
+        return $checkoutCtrl.scope();
         }).then(function(cart) {
             var lineItems = [];
-            _.each(cart.lineItems, function(lineItem) {
+            _.each(window.CheckoutPageToolkit.getCheckoutState('lineItems.regular'), function(lineItem) {
                 lineItems.push({
                     id: lineItem.variant.id,
                     price: (lineItem.memberPricePerUnit/100.0).toFixed(2),
                     quantity: lineItem.quantity
                 });
+                console.log('lineItem',lineItems);
             });
 
             window.criteo_q.push(
