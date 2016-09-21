@@ -135,7 +135,7 @@ module.exports = function(config, pageType, pageData) {
         return $checkoutCtrl.scope();
         }).then(function(cart) {
             var lineItems = [];
-            _.each(window.CheckoutPageToolkit.getCheckoutState('lineItems.regular'), function(lineItem) {
+            _.each(window.CheckoutPageToolkit.getCheckoutState('lineItems.all'), function(lineItem) {
                 lineItems.push({
                     id: lineItem.variant.id,
                     price: (lineItem.memberPricePerUnit/100.0).toFixed(2),
