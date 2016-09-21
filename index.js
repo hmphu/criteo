@@ -27,7 +27,7 @@ module.exports = function(config, pageType, pageData) {
         //Something is wrong with pageType on product pages
         $('[ng-controller=ProductCtrl]').length > 0 && trackProductPage();
 
-        window.location.pathname == '/cart/beta' && trackCart();
+        window.location.pathname == '/cart' && trackCart();
 
         /\/order\//.exec(window.location.pathname) && typeof order !== 'undefined' && trackOrder();
     });
@@ -122,7 +122,6 @@ module.exports = function(config, pageType, pageData) {
     }
 
     function trackCart() {
-        console.log('Im tracking');
         feu.whenReady(function() {
             var $checkoutCtrl = $('[ng-controller="CheckoutBetaCtrl"]');
 
@@ -142,7 +141,7 @@ module.exports = function(config, pageType, pageData) {
                     price: (lineItem.memberPricePerUnit/100.0).toFixed(2),
                     quantity: lineItem.quantity
                 });
-                console.log('lineItem',lineItems);
+                
             });
 
             window.criteo_q.push(
