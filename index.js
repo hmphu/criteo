@@ -3,7 +3,6 @@ var feu = require('symphony-feu');
 
 module.exports = function(config, pageType, pageData) {
     var feu = require('symphony-feu');
-    console.log('Im here');
     var accountId = config.accountId;
     var pcUniqueId = 'id';
     var pcUniqueIdOrder = 'productId';
