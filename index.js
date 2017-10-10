@@ -8,6 +8,8 @@ module.exports = function(config, pageType, pageData) {
     var pcUniqueId = 'id';
     var pcUniqueIdOrder = 'productId';
 
+    //config.debug = true;
+
     Loader("//static.criteo.net/js/ld/ld.js");
 
     window.criteo_q = window.criteo_q || [];
@@ -123,16 +125,16 @@ module.exports = function(config, pageType, pageData) {
 
     function trackCart() {
         feu.whenReady(function() {
-            if(typeof $('[ng-controller=CheckoutCtrl]').scope() !== 'undefined' &&
-                $('[ng-controller=CheckoutCtrl]').scope().cart &&
-                $('[ng-controller=CheckoutCtrl]').scope().cart.lineItems.length > 0) {
-                return $('[ng-controller=CheckoutCtrl]').scope().cart;
+            if(typeof $('[ng-controller=CheckoutBetaCtrl]').scope() !== 'undefined' &&
+                $('[ng-controller=CheckoutBetaCtrl]').scope().getCheckoutState('lineItems.regular') &&
+                $('[ng-controller=CheckoutBetaCtrl]').scope().getCheckoutState('lineItems.regular').length > 0) {
+                return  $('[ng-controller=CheckoutBetaCtrl]').scope().getCheckoutState('lineItems.regular');
             }
 
             return false;
-        }).then(function(cart) {
+        }).then(function(cartItems) {
             var lineItems = [];
-            _.each(cart.lineItems, function(lineItem) {
+            _.each(cartItems, function(lineItem) {
                 lineItems.push({
                     id: lineItem.variant.id,
                     price: (lineItem.memberPricePerUnit/100.0).toFixed(2),
