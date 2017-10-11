@@ -40,7 +40,7 @@ module.exports = function(config, pageType, pageData) {
 
     function getDeviceType() {
         if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
-            if(/iPad/.text(navigator.userAgent) || $(window).width() > 736) {
+            if(/iPad/.test(navigator.userAgent) || $(window).width() > 736) {
                 return 't';
             }
 
